@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART CAMPUS | Student Management Dashboard</title>
+    <!-- Clean Academic Typography: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- =====================================================================
+         CSS3 STYLESHEET (Can be moved directly into a separate 'style.css')
+         ===================================================================== -->
+    <style>
+        /* -------------------------------------------------------------------
+           1. CSS VARIABLES & RESET
+           ------------------------------------------------------------------- */
+        :root {
+            --navy-dark: #0F172A;
+            --navy-sidebar: #131C31;
+            --navy-hover: #1E293B;
+            --bg-main: #F1F5F9;
+            --bg-white: #FFFFFF;
+            --primary-blue: #2563EB;
+            --primary-blue-light: #EFF6FF;
+            --accent-purple: #7C3AED;
+            --accent-purple-light: #F5F3FF;
+            --accent-emerald: #10B981;
+            --accent-emerald-light: #ECFDF5;
+            --accent-amber: #F59E0B;
+            --accent-amber-light: #FFFBEB;
+            --accent-rose: #EF4444;
+            --text-dark: #0F172A;
+            --text-body: #475569;
+            --text-muted: #94A3B8;
+            --border-light: #E2E8F0;
+            --shadow-soft: 0 4px 20px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0 10px 25px rgba(37, 99, 235, 0.12);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --sidebar-width: 265px;
+            --transition: all 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* -------------------------------------------------------------------
+           2. DASHBOARD SHELL LAYOUT (Sidebar + Main Area)
+           ------------------------------------------------------------------- */
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Pure CSS Mobile Sidebar Toggle */
+        #sidebar-toggle {
+            display: none;
+        }
+
+        /* -------------------------------------------------------------------
+           3. DARK NAVY VERTICAL SIDEBAR
+           ------------------------------------------------------------------- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--navy-dark) 0%, var(--navy-sidebar) 100%);
+            color: #FFFFFF;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand {
+            padding: 24px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .brand-text h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-text span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 14px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            padding: 0 12px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu ul {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: #CBD5E1;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.25) 0%, rgba(124, 58, 237, 0.15) 100%);
+            color: #FFFFFF;
+            border-left: 3px solid var(--primary-blue);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent-purple);
+            color: #FFFFFF;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* -------------------------------------------------------------------
+           4. MAIN CONTENT WRAPPER & TOP NAVIGATION BAR
+           ------------------------------------------------------------------- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            width: calc(100% - var(--sidebar-width));
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: var(--bg-white);
+            padding: 16px 32px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--bg-main);
+            border: 1px solid var(--border-light);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .welcome-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .welcome-text p {
+            font-size: 0.82rem;
+            color: var(--text-body);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* Search Bar */
+        .search-box {
+            position: relative;
+            width: 240px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 14px 9px 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-main);
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: var(--bg-white);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .academic-pill {
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            white-space: nowrap;
+        }
+
+        .notif-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
+
+        .notif-btn:hover {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue-light);
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 8px;
+            right: 9px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-rose);
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+        }
+
+        .topbar-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 12px;
+            border-left: 1px solid var(--border-light);
+        }
+
+        .topbar-profile img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .topbar-profile-info span {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .topbar-profile-info small {
+            font-size: 0.74rem;
+            color: var(--text-body);
+        }
+
+        /* -------------------------------------------------------------------
+           5. DASHBOARD CONTAINER & COMMON CARD STYLES
+           ------------------------------------------------------------------- */
+        .dashboard-body {
+            padding: 28px 32px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-body);
+        }
+
+        /* -------------------------------------------------------------------
+           6. FOUR OVERVIEW STATISTIC CARDS
+           ------------------------------------------------------------------- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-card::top {
+            content: '';
+        }
+
+        .stat-card.blue { border-top: 4px solid var(--primary-blue); }
+        .stat-card.purple { border-top: 4px solid var(--accent-purple); }
+        .stat-card.emerald { border-top: 4px solid var(--accent-emerald); }
+        .stat-card.amber { border-top: 4px solid var(--accent-amber); }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-body);
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .stat-card.blue .stat-icon { background: var(--primary-blue-light); color: var(--primary-blue); }
+        .stat-card.purple .stat-icon { background: var(--accent-purple-light); color: var(--accent-purple); }
+        .stat-card.emerald .stat-icon { background: var(--accent-emerald-light); color: var(--accent-emerald); }
+        .stat-card.amber .stat-icon { background: var(--accent-amber-light); color: var(--accent-amber); }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .stat-trend {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--accent-emerald);
+        }
+
+        .stat-card.amber .stat-trend {
+            color: var(--accent-amber);
+        }
+
+        /* -------------------------------------------------------------------
+           7. TWO-COLUMN GRID: STUDENT PROFILE & ATTENDANCE OVERVIEW
+           ------------------------------------------------------------------- */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 24px;
+        }
+
+        /* Student Profile Card */
+        .profile-banner {
+            height: 85px;
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--primary-blue) 60%, var(--accent-purple) 100%);
+            border-radius: 12px;
+            margin-bottom: -45px;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 12px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            object-fit: cover;
+            margin-bottom: 12px;
+            background: #E2E8F0;
+        }
+
+        .profile-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .profile-id-badge {
+            display: inline-block;
+            margin-top: 4px;
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+
+        .profile-details-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item {
+            background: var(--bg-main);
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+        }
+
+        .detail-item.full-width {
+            grid-column: span 2;
+        }
+
+        .detail-item span {
+            display: block;
+            font-size: 0.74rem;
+            color: var(--text-body);
+            margin-bottom: 2px;
+        }
+
+        .detail-item strong {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Attendance Section */
+        .attendance-summary-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-main);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .att-stat {
+            text-align: center;
+        }
+
+        .att-stat span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-body);
+        }
+
+        .att-stat strong {
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .att-stat.present strong { color: var(--accent-emerald); }
+        .att-stat.absent strong { color: var(--accent-rose); }
+        .att-stat.overall strong { color: var(--primary-blue); }
+
+        .subject-attendance-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .att-row-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .att-row-info span:last-child {
+            color: var(--primary-blue);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 9px;
+            background: var(--bg-main);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple));
+        }
+
+        .progress-fill.high {
+            background: linear-gradient(90deg, #10B981, #059669);
+        }
+
+        .progress-fill.warn {
+            background: linear-gradient(90deg, #F59E0B, #D97706);
+        }
+
+        /* -------------------------------------------------------------------
+           8. MARKS & RESULTS TABLE
+           ------------------------------------------------------------------- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .academic-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .academic-table thead {
+            background: var(--bg-main);
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .academic-table th {
+            padding: 13px 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .academic-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-body);
+        }
+
+        .academic-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .subject-name-cell {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .grade-o { background: var(--accent-emerald-light); color: #059669; }
+        .grade-aplus { background: var(--primary-blue-light); color: var(--primary-blue); }
+        .grade-a { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+        /* -------------------------------------------------------------------
+           9. WEEKLY TIMETABLE
+           ------------------------------------------------------------------- */
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.84rem;
+        }
+
+        .timetable th {
+            background: var(--navy-dark);
+            color: #FFFFFF;
+            padding: 12px 10px;
+            font-weight: 600;
+            border: 1px solid #1E293B;
+        }
+
+        .timetable td {
+            padding: 12px 10px;
+            border: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        .day-col {
+            font-weight: 700;
+            background: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        .slot-subject {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .slot-room {
+            font-size: 0.74rem;
+            color: var(--text-body);
+        }
+
+        .slot-break {
+            background: #FEF3C7;
+            color: #B45309;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .slot-lab {
+            background: var(--accent-purple-light);
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .slot-lab .slot-subject {
+            color: var(--accent-purple);
+        }
+
+        /* -------------------------------------------------------------------
+           10. NOTIFICATIONS & UPCOMING EVENTS GRID
+           ------------------------------------------------------------------- */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+        }
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .notif-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px;
+            border-radius: 12px;
+            background: var(--bg-main);
+            border-left: 4px solid var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        .notif-item:hover {
+            transform: translateX(4px);
+            background: #EFF6FF;
+        }
+
+        .notif-item.exam { border-left-color: var(--accent-rose); }
+        .notif-item.assignment { border-left-color: var(--accent-amber); }
+        .notif-item.event { border-left-color: var(--accent-purple); }
+
+        .notif-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+
+        .notif-item.exam .notif-tag { background: #FEE2E2; color: #DC2626; }
+        .notif-item.assignment .notif-tag { background: #FEF3C7; color: #D97706; }
+        .notif-item .notif-tag { background: #DBEAFE; color: #2563EB; }
+        .notif-item.event .notif-tag { background: #EDE9FE; color: #7C3AED; }
+
+        .notif-body h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+        }
+
+        .notif-body p {
+            font-size: 0.82rem;
+            color: var(--text-body);
+        }
+
+        .notif-time {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Upcoming Events Cards */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .event-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-white);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .event-date-box {
+            min-width: 62px;
+            height: 64px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .event-date-box .day {
+            font-size: 1.3rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .event-date-box .month {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .event-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .event-info p {
+            font-size: 0.82rem;
+            color: var(--text-body);
+        }
+
+        /* -------------------------------------------------------------------
+           11. FOOTER
+           ------------------------------------------------------------------- */
+        .dashboard-footer {
+            margin-top: auto;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.84rem;
+            color: var(--text-body);
+        }
+
+        /* -------------------------------------------------------------------
+           12. RESPONSIVE DESIGN (Laptops, Tablets, Mobile)
+           ------------------------------------------------------------------- */
+        @media (max-width: 1150px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .two-col-grid,
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 860px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            #sidebar-toggle:checked ~ .sidebar {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .search-box {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .topbar {
+                padding: 14px 18px;
+            }
+
+            .dashboard-body {
+                padding: 18px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .academic-pill,
+            .topbar-profile-info {
+                display: none;
+            }
+
+            .profile-details-list {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-item.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <!-- Pure CSS Sidebar Checkbox -->
+        <input type="checkbox" id="sidebar-toggle">
+
+        <!-- =================================================================
+             1. VERTICAL DARK NAVY SIDEBAR
+             ================================================================= -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">SC</div>
+                <div class="brand-text">
+                    <h2>SMART CAMPUS</h2>
+                    <span>University ERP Portal</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <p class="menu-label">Main Navigation</p>
+                <ul>
+                    <li>
+                        <a href="#overview" class="active">
+                            <span class="nav-icon">&#9638;</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profile">
+                            <span class="nav-icon">&#128100;</span>
+                            My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#attendance">
+                            <span class="nav-icon">&#10004;</span>
+                            Attendance
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#marks">
+                            <span class="nav-icon">&#128202;</span>
+                            Marks &amp; Results
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#timetable">
+                            <span class="nav-icon">&#128197;</span>
+                            Timetable
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#marks">
+                            <span class="nav-icon">&#128218;</span>
+                            Subjects
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="menu-label" style="margin-top: 22px;">Campus Updates</p>
+                <ul>
+                    <li>
+                        <a href="#notifications">
+                            <span class="nav-icon">&#128276;</span>
+                            Notifications
+                            <span class="nav-badge">4</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#events">
+                            <span class="nav-icon">&#128227;</span>
+                            Announcements
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profile">
+                            <span class="nav-icon">&#9881;</span>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                Logged in as <strong>Student</strong><br>
+                B.Tech CSE &bull; Semester II
+            </div>
+        </aside>
+
+        <!-- =================================================================
+             2. MAIN CONTENT AREA
+             ================================================================= -->
+        <div class="main-content">
+
+            <!-- TOP NAVIGATION BAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <label for="sidebar-toggle" class="mobile-menu-btn" aria-label="Open Navigation">&#9776;</label>
+                    <div class="welcome-text">
+                        <h1>Welcome back, Rohan Verma!</h1>
+                        <p>Here is your academic summary for today.</p>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <span class="search-icon">&#128269;</span>
+                        <input type="text" placeholder="Search subjects, exams..." aria-label="Search">
+                    </div>
+
+                    <span class="academic-pill">AY 2026–2027</span>
+
+                    <a href="#notifications" class="notif-btn" title="View Notifications">
+                        &#128276;
+                        <span class="notif-dot"></span>
+                    </a>
+
+                    <div class="topbar-profile">
+                        <img src="https://placehold.co/100x100/2563EB/FFFFFF?text=RV" alt="Rohan Verma">
+                        <div class="topbar-profile-info">
+                            <span>Rohan Verma</span>
+                            <small>ID: SC2026104</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD MAIN BODY -->
+            <main class="dashboard-body">
+
+                <!-- ---------------------------------------------------------
+                     3. FOUR STATISTIC OVERVIEW CARDS
+                     --------------------------------------------------------- -->
+                <section id="overview" class="stats-grid">
+                    <!-- Stat 1 -->
+                    <div class="stat-card blue">
+                        <div class="stat-top">
+                            <span class="stat-label">Total Attendance</span>
+                            <div class="stat-icon">&#10003;</div>
+                        </div>
+                        <div class="stat-value">92%</div>
+                        <p class="stat-trend">&#9650; +3.5% above minimum criteria</p>
+                    </div>
+
+                    <!-- Stat 2 -->
+                    <div class="stat-card purple">
+                        <div class="stat-top">
+                            <span class="stat-label">Average Marks</span>
+                            <div class="stat-icon">&#9733;</div>
+                        </div>
+                        <div class="stat-value">85%</div>
+                        <p class="stat-trend">&#9650; Current SGPA: 8.9 / 10</p>
+                    </div>
+
+                    <!-- Stat 3 -->
+                    <div class="stat-card emerald">
+                        <div class="stat-top">
+                            <span class="stat-label">Total Subjects</span>
+                            <div class="stat-icon">&#128214;</div>
+                        </div>
+                        <div class="stat-value">6</div>
+                        <p class="stat-trend">5 Theory + 1 Practical Lab</p>
+                    </div>
+
+                    <!-- Stat 4 -->
+                    <div class="stat-card amber">
+                        <div class="stat-top">
+                            <span class="stat-label">Upcoming Assignments</span>
+                            <div class="stat-icon">&#9200;</div>
+                        </div>
+                        <div class="stat-value">4</div>
+                        <p class="stat-trend">&#9888; 2 due this week</p>
+                    </div>
+                </section>
+
+                <!-- ---------------------------------------------------------
+                     4. STUDENT PROFILE & ATTENDANCE OVERVIEW
+                     --------------------------------------------------------- -->
+                <div class="two-col-grid">
+                    <!-- Student Profile Card -->
+                    <section id="profile" class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">&#128100; Student Profile</h2>
+                            <span class="card-subtitle">Active Status</span>
+                        </div>
+
+                        <div class="profile-banner"></div>
+                        <div class="profile-header">
+                            <img src="https://placehold.co/180x180/1E293B/FFFFFF?text=Rohan+Verma" alt="Student Photo" class="profile-avatar">
+                            <h3>Rohan Verma</h3>
+                            <span class="profile-id-badge">Student ID: SC2026104</span>
+                        </div>
+
+                        <div class="profile-details-list">
+                            <div class="detail-item">
+                                <span>Department</span>
+                                <strong>Computer Science &amp; Engg.</strong>
+                            </div>
+                            <div class="detail-item">
+                                <span>Year of Study</span>
+                                <strong>1st Year (Freshman)</strong>
+                            </div>
+                            <div class="detail-item">
+                                <span>Current Semester</span>
+                                <strong>Semester II</strong>
+                            </div>
+                            <div class="detail-item">
+                                <span>Section &amp; Roll No.</span>
+                                <strong>CSE-A &bull; Roll #42</strong>
+                            </div>
+                            <div class="detail-item full-width">
+                                <span>College / University Name</span>
+                                <strong>National Institute of Technology &amp; Sciences</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Attendance Overview Card -->
+                    <section id="attendance" class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">&#128200; Attendance Overview</h2>
+                            <span class="card-subtitle">Updated Today</span>
+                        </div>
+
+                        <div class="attendance-summary-bar">
+                            <div class="att-stat overall">
+                                <span>Overall Attendance</span>
+                                <strong>92.0%</strong>
+                            </div>
+                            <div class="att-stat present">
+                                <span>Classes Present</span>
+                                <strong>138 / 150</strong>
+                            </div>
+                            <div class="att-stat absent">
+                                <span>Classes Absent</span>
+                                <strong>12 Days</strong>
+                            </div>
+                        </div>
+
+                        <div class="subject-attendance-list">
+                            <div>
+                                <div class="att-row-info">
+                                    <span>Engineering Mathematics</span>
+                                    <span>95% (28/30)</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill high" style="width: 95%;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="att-row-info">
+                                    <span>Engineering Physics</span>
+                                    <span>90% (27/30)</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 90%;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="att-row-info">
+                                    <span>Engineering Chemistry</span>
+                                    <span>88% (26/30)</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 88%;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="att-row-info">
+                                    <span>Programming in C &amp; Python</span>
+                                    <span>96% (29/30)</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill high" style="width: 96%;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="att-row-info">
+                                    <span>Communication Skills</span>
+                                    <span>91% (28/30)</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 91%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ---------------------------------------------------------
+                     5. MARKS & RESULTS TABLE
+                     --------------------------------------------------------- -->
+                <section id="marks" class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">&#127891; Marks &amp; Internal Assessment Results</h2>
+                        <span class="card-subtitle">Mid-Semester Examination</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="academic-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject Code</th>
+                                    <th>Subject Name</th>
+                                    <th>Marks Obtained</th>
+                                    <th>Maximum Marks</th>
+                                    <th>Percentage</th>
+                                    <th>Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>MA102</td>
+                                    <td class="subject-name-cell">Mathematics</td>
+                                    <td>88</td>
+                                    <td>100</td>
+                                    <td>88%</td>
+                                    <td><span class="grade-badge grade-aplus">A+</span></td>
+                                </tr>
+                                <tr>
+                                    <td>PH104</td>
+                                    <td class="subject-name-cell">Physics</td>
+                                    <td>82</td>
+                                    <td>100</td>
+                                    <td>82%</td>
+                                    <td><span class="grade-badge grade-a">A</span></td>
+                                </tr>
+                                <tr>
+                                    <td>CH106</td>
+                                    <td class="subject-name-cell">Chemistry</td>
+                                    <td>79</td>
+                                    <td>100</td>
+                                    <td>79%</td>
+                                    <td><span class="grade-badge grade-a">A</span></td>
+                                </tr>
+                                <tr>
+                                    <td>CS108</td>
+                                    <td class="subject-name-cell">Programming</td>
+                                    <td>94</td>
+                                    <td>100</td>
+                                    <td>94%</td>
+                                    <td><span class="grade-badge grade-o">O (Outstanding)</span></td>
+                                </tr>
+                                <tr>
+                                    <td>HS110</td>
+                                    <td class="subject-name-cell">Communication Skills</td>
+                                    <td>84</td>
+                                    <td>100</td>
+                                    <td>84%</td>
+                                    <td><span class="grade-badge grade-aplus">A+</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ---------------------------------------------------------
+                     6. WEEKLY TIMETABLE
+                     --------------------------------------------------------- -->
+                <section id="timetable" class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">&#128197; Weekly Class Timetable</h2>
+                        <span class="card-subtitle">CSE-A &bull; Block B, Room 204</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="timetable">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>09:00 - 10:00</th>
+                                    <th>10:00 - 11:00</th>
+                                    <th>11:00 - 11:30</th>
+                                    <th>11:30 - 12:30</th>
+                                    <th>12:30 - 01:30</th>
+                                    <th>01:30 - 03:30</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="day-col">Monday</td>
+                                    <td>
+                                        <span class="slot-subject">Mathematics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Physics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td rowspan="5" class="slot-break">MORNING<br>BREAK</td>
+                                    <td>
+                                        <span class="slot-subject">Programming</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td rowspan="5" class="slot-break">LUNCH<br>BREAK</td>
+                                    <td class="slot-lab">
+                                        <span class="slot-subject">Programming Lab</span>
+                                        <span class="slot-room">Computer Center 1</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="day-col">Tuesday</td>
+                                    <td>
+                                        <span class="slot-subject">Chemistry</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Mathematics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Comm. Skills</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td class="slot-lab">
+                                        <span class="slot-subject">Physics Lab</span>
+                                        <span class="slot-room">Applied Science Lab</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="day-col">Wednesday</td>
+                                    <td>
+                                        <span class="slot-subject">Programming</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Chemistry</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Physics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Library / Mentoring</span>
+                                        <span class="slot-room">Central Library</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="day-col">Thursday</td>
+                                    <td>
+                                        <span class="slot-subject">Physics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Comm. Skills</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Mathematics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td class="slot-lab">
+                                        <span class="slot-subject">Chemistry Lab</span>
+                                        <span class="slot-room">Chem Lab B</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="day-col">Friday</td>
+                                    <td>
+                                        <span class="slot-subject">Mathematics</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Programming</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td>
+                                        <span class="slot-subject">Chemistry</span>
+                                        <span class="slot-room">Room 204</span>
+                                    </td>
+                                    <td class="slot-lab">
+                                        <span class="slot-subject">Communication Lab</span>
+                                        <span class="slot-room">Language Lab 2</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ---------------------------------------------------------
+                     7. NOTIFICATIONS & UPCOMING EVENTS
+                     --------------------------------------------------------- -->
+                <div class="bottom-grid">
+                    <!-- Notifications Panel -->
+                    <section id="notifications" class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">&#128276; Campus Notifications</h2>
+                            <span class="card-subtitle">4 Unread</span>
+                        </div>
+
+                        <div class="notification-list">
+                            <div class="notif-item exam">
+                                <div class="notif-body">
+                                    <span class="notif-tag">Examination</span>
+                                    <h4>End-Semester Practical Exam Schedule Released</h4>
+                                    <p>Lab examinations for Programming and Physics will commence from December 10.</p>
+                                    <span class="notif-time">2 hours ago &bull; Exam Cell</span>
+                                </div>
+                            </div>
+
+                            <div class="notif-item assignment">
+                                <div class="notif-body">
+                                    <span class="notif-tag">Assignment Deadline</span>
+                                    <h4>C Programming Mini-Project Submission</h4>
+                                    <p>Upload your source code and PDF report on the portal before Friday, 5:00 PM.</p>
+                                    <span class="notif-time">Yesterday &bull; Dept. of CSE</span>
+                                </div>
+                            </div>
+
+                            <div class="notif-item">
+                                <div class="notif-body">
+                                    <span class="notif-tag">Internal Assessment</span>
+                                    <h4>Mid-Term Marks Verified &amp; Published</h4>
+                                    <p>Students can review their internal marks and report discrepancies by Monday.</p>
+                                    <span class="notif-time">2 days ago &bull; Academic Office</span>
+                                </div>
+                            </div>
+
+                            <div class="notif-item event">
+                                <div class="notif-body">
+                                    <span class="notif-tag">College Event</span>
+                                    <h4>Registrations Open for "CodeSprint 2026"</h4>
+                                    <p>Annual inter-department coding hackathon for first-year engineering students.</p>
+                                    <span class="notif-time">3 days ago &bull; Student Council</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Upcoming Events Panel -->
+                    <section id="events" class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">&#127881; Upcoming Academic Events</h2>
+                            <span class="card-subtitle">Nov – Dec 2026</span>
+                        </div>
+
+                        <div class="events-list">
+                            <div class="event-card">
+                                <div class="event-date-box">
+                                    <span class="day">28</span>
+                                    <span class="month">Nov</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Web Development Bootcamp</h4>
+                                    <p>Hands-on HTML5 &amp; CSS3 workshop at Main Auditorium (10:00 AM).</p>
+                                </div>
+                            </div>
+
+                            <div class="event-card">
+                                <div class="event-date-box">
+                                    <span class="day">04</span>
+                                    <span class="month">Dec</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>CodeSprint Freshman Hackathon</h4>
+                                    <p>24-hour problem-solving challenge hosted by the CSE Coding Club.</p>
+                                </div>
+                            </div>
+
+                            <div class="event-card">
+                                <div class="event-date-box">
+                                    <span class="day">12</span>
+                                    <span class="month">Dec</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Annual Science &amp; Tech Expo</h4>
+                                    <p>First-year project exhibition and guest lecture on AI &amp; Cloud Computing.</p>
+                                </div>
+                            </div>
+
+                            <div class="event-card">
+                                <div class="event-date-box">
+                                    <span class="day">18</span>
+                                    <span class="month">Dec</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Semester II Theory Examinations</h4>
+                                    <p>Hall tickets available for download from the Examination Portal.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </main>
+
+            <!-- =================================================================
+                 8. FOOTER
+                 ================================================================= -->
+            <footer class="dashboard-footer">
+                <div>
+                    <strong>National Institute of Technology &amp; Sciences</strong> &bull; Academic Year 2026–2027
+                </div>
+                <div>
+                    &copy; 2026 SMART CAMPUS ERP. All Rights Reserved.
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+</body>
+</html>
